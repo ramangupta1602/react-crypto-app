@@ -92,7 +92,7 @@ const CoinDetails = () => {
         setChartArray(chartData.prices);
         setLoading(false);
       } catch (error) {
-        setError(true);
+        setError(true );
         setLoading(false);
       }
     };

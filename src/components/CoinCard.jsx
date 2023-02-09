@@ -29,7 +29,7 @@ const CoinCard = ({ id, name, img, symbol, price, currencySymbol = "₹" }) => (
       </Heading>
 
       <Text noOfLines={1}>{name}</Text>
-      <Text noOfLines={1}>{price ? `${currencySymbol}${price}` : "NA"}</Text>
+      <Text noOfLines={1}>{price ? `${currencySymbol}${price}`: "NA"}</Text>
     </VStack>
   </Link>
 );

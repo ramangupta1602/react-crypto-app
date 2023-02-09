@@ -12,7 +12,7 @@ const ErrorComponent = ({ message }) => {
       w={"container.lg"}
     >
       <AlertIcon />
-      {message}
+      { message}
     </Alert>
   );
 };
