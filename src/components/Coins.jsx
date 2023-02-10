@@ -30,7 +30,6 @@ const Coins = () => {
           `${server}/coins/markets?vs_currency=${currency}&page=${page}`
         );
         setCoins(data);
-        console.log(data)
         setLoading(false);
       } catch (error) {
         setError(true);
@@ -39,6 +38,7 @@ const Coins = () => {
     };
     fetchCoins();
   }, [currency, page]);
+
   if (error) return <ErrorComponent message={"Error While Fetching Coins"} />;
 
   return (
@@ -56,9 +56,7 @@ const Coins = () => {
           </RadioGroup>
 
           <HStack wrap={"wrap"} justifyContent={"space-evenly"}>
-            {coins.length === 0 ? <h3 style={{fontWeight: "bold",color:'red' }}>
-                  No Data Found.
-                </h3> :coins.map((i) => (
+            {coins.map((i) => (
               <CoinCard
                 id={i.id}
                 key={i.id}

@@ -68,6 +68,10 @@ const CoinDetails = () => {
         setDays("365d");
         setLoading(true);
         break;
+      case "5y":
+        setDays("1826d");
+        setLoading(true);
+        break;
       case "max":
         setDays("max");
         setLoading(true);
