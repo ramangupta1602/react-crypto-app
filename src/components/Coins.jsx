@@ -7,11 +7,14 @@ import ErrorComponent from "./ErrorComponent";
 import CoinCard from "./CoinCard";
 
 const Coins = () => {
+
   const [coins, setCoins] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [page, setPage] = useState(1);
   const [currency, setCurrency] = useState("inr");
+  const [updatedCoin,setUpdatedCoin] = useState([])
+  const [liveCoin,setLiveCoin] = useState()
 
   const currencySymbol =
     currency === "inr" ? "₹" : currency === "eur" ? "€" : "$";
@@ -21,12 +24,39 @@ const Coins = () => {
     setLoading(true);
   };
 
+    // useEffect(()=>{
+    //   updatedCoin.map((item)=>{
+    //     console.log(item.current_price,"Map price")
+    //     return setLiveCoin(item?.current_price)
+    //   })
+    // },[updatedCoin])
+
   const btns = new Array(132).fill(1);
 
-  useEffect(() => {
-    const fetchCoins = async () => {
+    setInterval(async function fetchCoins() {
       try {
-        const { data } = await axios.get(
+        const {data} = await axios.get(
+          `${server}/coins/markets?vs_currency=${currency}&page=${page}`
+        );
+        setCurrency("inr");
+        setCoins(data);
+        coins.map((i)=>(
+          <CoinCard current_price={i.current_price} />
+          // console.log(item.current_price,"Map price")
+          // return setLiveCoin(item?.current_price)
+        ))
+        setLoading(false);
+      } catch (error) {
+        setError(true);
+        setLoading(false);
+      }
+      return fetchCoins;
+  },300000)
+
+  useEffect(() => {
+    setInterval(async function fetchCoins() {
+      try {
+        const {data} = await axios.get(
           `${server}/coins/markets?vs_currency=${currency}&page=${page}`
         );
         setCoins(data);
@@ -35,13 +65,14 @@ const Coins = () => {
         setError(true);
         setLoading(false);
       }
-    };
-    fetchCoins();
+      return fetchCoins;
+    }(),9000)
   }, [currency, page]);
 
   if (error) return <ErrorComponent message={"Error While Fetching Coins"} />;
-
+  console.log("jiji",liveCoin)
   return (
+    <>
     <Container maxW={"container.xl"}>
       {loading ? (
         <Loader />
@@ -84,6 +115,7 @@ const Coins = () => {
         </>
       )}
     </Container>
+    </>
   );
 };
 
